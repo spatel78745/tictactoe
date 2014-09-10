@@ -1,0 +1,107 @@
+class Sym {
+	private char val = 'X';
+	
+	public Sym() {}
+	
+	public Sym(char val) { this.val = val; }
+	
+	public void flip() { val = (val == 'X') ? 'Y' : 'X'; }
+	
+	public char get() { return val; }
+	
+	public void set(char val) { this.val = val; }
+	
+	public String toString() { return new Character(get()).toString(); }
+	
+	static void test() {
+		Sym sym = new Sym();
+		
+		char c = sym.get();
+		System.out.print("test get: " + c + ' ');
+		if (c == 'X') System.out.println("pass");
+		else          System.out.println("fail");
+		
+		sym.set('X');
+		c = sym.get();
+		System.out.print("test set: " + c + ' ');
+		if (c == 'X') System.out.println("pass");
+		else          System.out.println("fail");
+
+		sym.set('Y');
+		c = sym.get();
+		System.out.print("test set: " + c + ' ');
+		if (c == 'Y') System.out.println("pass");
+		else          System.out.println("fail");
+		
+		sym.flip();
+		c = sym.get();
+		System.out.print("test flip: " + c + ' ');
+		if (c == 'X') System.out.println("pass");
+		else          System.out.println("fail");
+		
+		sym.flip();
+		c = sym.get();
+		System.out.print("test flip: " + c + ' ');
+		if (c == 'Y') System.out.println("pass");
+		else          System.out.println("fail");
+	
+	}
+}
+
+class Board {
+	private Sym[] board;
+	private int   dim, len;
+	private int   count;
+	
+	Board(int dim) { 
+		this.dim = dim;
+		board    = new Sym[dim * dim];		
+	}
+
+	Sym get(int idx         ) { return board[idx]; }
+	Sym get(int row, int col) { return board[row * dim + col]; }
+		
+	void set(int idx, char val) { board[idx] = new Sym(val); }
+	
+	void remove(int idx) { board[idx] = null; }
+	
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		for(int row = 0; row < dim; row++) {
+			for(int col = 0; col < dim; col++) {
+				Sym sym = get(row, col);
+				sb.append((sym == null) ? '?' : board[row * dim + col]);
+			}
+			sb.append('\n');
+		}
+		
+		return sb.toString();
+	}
+	
+	
+	private char toChar(int row, int col) {
+		Sym sym = get(row, col);
+		
+		return (sym == null) ? '?' : sym.get(); 
+	}
+	
+	static void test() {
+		Board board = new Board(3);
+		board.set(0, 'X');
+		board.set(1, 'O');
+		board.set(2, 'X');
+		board.set(3, 'O');
+		System.out.println(board);
+	}
+}
+
+public class TicTacToe {
+//	void fillHelper(int pos, Board board) {
+//		if 
+//	}
+
+	public static void main(String[] args) {
+		Board.test();
+		Sym.test();
+	}
+}

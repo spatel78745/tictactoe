@@ -1,0 +1,43 @@
+class Board {
+	private char[] board;
+	private int    dim;
+	
+	Board(int dim) { 
+		this.dim = dim;
+		board = new char[dim * dim];
+	}
+	
+	void set(int idx, char val) {
+		board[idx] = val;
+	}
+	
+	void draw() {
+		int last = dim - 1, row, col;
+		
+		for(row = 0; row < last; row++) {
+			for(col = 0; col < last; col++) {
+				System.out.print(board[row * dim + col] + "|");
+			}
+			System.out.print(board[row * dim + col]);
+
+		System.out.println();
+		for(int i = 0; i < last * 2; i++)
+			System.out.print("_");
+		}
+	}
+	
+	static void test() {
+		Board board = new Board(2);
+		board.set(0, 'X');
+		board.set(1, 'O');
+		board.set(2, 'X');
+		board.set(3, 'O');
+		board.draw();
+	}
+}
+
+public class TicTacToe {
+	public static void main(String[] args) {
+		Board.test();
+	}
+}

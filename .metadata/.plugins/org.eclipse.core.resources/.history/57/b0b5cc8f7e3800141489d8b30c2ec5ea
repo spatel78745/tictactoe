@@ -1,0 +1,151 @@
+import java.util.Iterator;
+
+class C {
+	public static final char X = 'X';
+	public static final char O = 'O';
+}
+
+class Sym {
+	private char val = C.X;
+	
+	public Sym() {}
+	
+	public Sym(char val) { this.val = val; }
+	
+	public Sym flip() { return (val == C.X) ? new Sym(C.O) : new Sym(C.X); }
+	
+	public char get() { return val; }
+	
+	public void set(char val) { this.val = val; }
+	
+	public String toString() { return new Character(get()).toString(); }
+	
+	static void test() {
+		Sym sym = new Sym();
+		
+		char c = sym.get();
+		System.out.print("test get: " + c + ' ');
+		if (c == C.X) System.out.println("pass");
+		else          System.out.println("fail");
+		
+		sym.set(C.X);
+		c = sym.get();
+		System.out.print("test set: " + c + ' ');
+		if (c == C.X) System.out.println("pass");
+		else          System.out.println("fail");
+
+		sym.set(C.O);
+		c = sym.get();
+		System.out.print("test set: " + c + ' ');
+		if (c == C.O) System.out.println("pass");
+		else          System.out.println("fail");
+		
+		sym.flip();
+		c = sym.get();
+		System.out.print("test flip: " + c + ' ');
+		if (c == C.X) System.out.println("pass");
+		else          System.out.println("fail");
+		
+		sym.flip();
+		c = sym.get();
+		System.out.print("test flip: " + c + ' ');
+		if (c == C.O) System.out.println("pass");
+		else          System.out.println("fail");
+	
+	}
+}
+
+class Board implements Iterable<Sym> {
+	public  int   len;
+	private Sym[] board;
+	private int   dim;
+	
+	Board(int dim) { 
+		this.dim = dim;
+		len      = dim * dim;
+		board    = new Sym[len];		
+	}
+
+	Sym get(int idx         ) { return board[idx];             }
+	Sym get(int row, int col) { return board[row * dim + col]; }
+
+	char getc(int row, int col) {
+		Sym sym = get(row, col);
+		
+		return (sym == null) ? '?' : sym.get(); 
+	}
+	
+	
+	void set(int idx, char val) { board[idx] = new Sym(val); }
+	void set(int idx, Sym  val) { board[idx] = val;          }
+	
+	class BoardIterator implements Iterator<Sym> {
+		private int idx;
+		
+	    public boolean hasNext() { return idx < len; }
+	    
+	    public Sym next() {
+	    	return board[idx++];
+	    }
+	    
+	    public void remove() {};
+	}
+	
+	public Iterator<Sym> iterator() { return new BoardIterator(); }
+		
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		for (int row = 0; row < dim; row++) {
+			for (int col = 0; col < dim; col++) {
+				sb.append(getc(row, col));
+			}
+			sb.append('\n');
+		}
+		
+		return sb.toString();
+	}
+	
+	static void test() {
+		Board board = new Board(3);
+		board.set(0, C.X);
+		board.set(1, C.O);
+		board.set(2, C.X);
+		board.set(3, C.O);
+		System.out.println(board);
+		
+		for (Sym sym : board) {
+			System.out.print(sym != null ? sym.get() : "?");
+		}
+		System.out.println();
+	}
+}
+
+public class TicTacToe {
+	void fillHelper(int idx, Sym sym, Board board) {
+		if (sym.get() == '?') 
+			System.out.println("Error")l
+		board.set(idx, sym);
+		
+		int i;
+		for (i = 0; i < board.len; i++) {
+			Sym s = board.get(i);
+			if (s == null) {
+				fillHelper(i, sym.flip(), board);
+			}
+		}
+		if (i == board.len) System.out.println(board);
+		
+		board.set(idx, null);
+	}
+	
+	void fill() {
+		Board board = new Board(3);
+		for (int i = 0; i < board.len; i++) { fillHelper(i, new Sym(C.X), board); System.out.println();}
+	}
+
+	public static void main(String[] args) {
+//		Board.test();
+//		Sym.test();
+		new TicTacToe().fill();
+	}
+}

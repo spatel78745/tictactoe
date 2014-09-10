@@ -1,0 +1,22 @@
+
+public class TicTacToe {
+	
+	class Board {
+		private int[] board;
+		
+		Board(int dim) { board = new int[dim * dim]; }
+		
+		void set(int idx) {
+			
+		}		
+	}
+
+	private static final int DIM     = 2;
+	private static final int board[] = new int[DIM * DIM];
+	
+	
+	private static void main(String[] args) {
+		System.out.println("HelloWorld");
+	}
+
+}
